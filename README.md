@@ -1,6 +1,6 @@
 # ElocalApiSupport
 
-TODO: Write a gem description
+Some useful utilities for building controllers to be used in JSON APIs
 
 ## Installation
 
@@ -18,7 +18,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Authorization
+
+    include ElocalApiSupport::Authorization
+
+### Authorization
+
+    include ElocalApiSupport::EnableCors
+
+### Authorization
+
+    include ElocalApiSupport::ModelFromParams
 
 ## Contributing
 
