@@ -6,12 +6,21 @@ module ElocalApiSupport::Authorization
 
   protected
 
-  def required_token
-    raise 'Please implement the required token method'
+  def find_required_token
+    if respond_to?(:required_token, false)
+      send(:required_token)
+    elsif Rails.application.config.elocal_api_support_token.present?
+      Rails.application.config.elocal_api_support_token
+    else
+      fail <<-EOL.strip
+No token could be found for ElocalApiSupport to use.  Please define a method required_token or set the
+configuration token in your config/application.rb by setting a value for config.elocal_api_support_token
+      EOL
+    end
   end
 
   def authorized?
-    authorize_request_token == required_token
+    authorize_request_token == find_required_token
   end
 
   def error_response_hash
