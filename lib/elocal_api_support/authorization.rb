@@ -7,7 +7,7 @@ module ElocalApiSupport::Authorization
   protected
 
   def find_required_token
-    if respond_to?(:required_token, false)
+    if respond_to?(:required_token, true)
       send(:required_token)
     elsif Rails.application.config.elocal_api_support_token.present?
       Rails.application.config.elocal_api_support_token

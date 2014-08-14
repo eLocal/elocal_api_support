@@ -25,9 +25,9 @@ module ElocalApiSupport::ModelFromParams
   def with_filters(rel)
     allowed_filter_columns.each do |param_name|
       if params[param_name].present?
-        if respond_to?(:"with_#{associated_model.to_s.downcase}_by_#{param_name}", false)
+        if respond_to?(:"with_#{associated_model.to_s.downcase}_by_#{param_name}", true)
           rel = send(:"with_#{associated_model.to_s.downcase}_by_#{param_name}", rel)
-        elsif associated_model.respond_to?(:"with_#{param_name}", false)
+        elsif associated_model.respond_to?(:"with_#{param_name}", true)
           rel = rel.send(:"with_#{param_name}", params[param_name])
         else
           rel = rel.where({param_name.to_sym => params[param_name]})
@@ -40,9 +40,9 @@ module ElocalApiSupport::ModelFromParams
 
   def with_sorting(rel)
     if filter_sort_col.present?
-      if respond_to?(:"order_#{associated_model.to_s.downcase}_by_#{filter_sort_col}", false)
+      if respond_to?(:"order_#{associated_model.to_s.downcase}_by_#{filter_sort_col}", true)
         rel = send(:"order_#{associated_model.to_s.downcase}_by_#{filter_sort_col}", rel)
-      elsif associated_model.respond_to?(:"order_by_#{filter_sort_col}", false)
+      elsif associated_model.respond_to?(:"order_by_#{filter_sort_col}", true)
         rel = rel.send(:"order_by_#{filter_sort_col}", params[filter_sort_col], filter_sort_direction)
       else
         rel = rel.order("#{associated_model.table_name}.#{filter_sort_col} #{filter_sort_direction}")
