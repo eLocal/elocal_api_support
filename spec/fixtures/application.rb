@@ -18,7 +18,10 @@ module Rails
       @routes
     end
     def logger
-      @logger ||= Logger.new('log/test.log')
+      @logger ||= begin
+        Dir.mkdir('log') unless Dir.exists?('log')
+        Logger.new('log/test.log')
+      end
     end
   end
 
