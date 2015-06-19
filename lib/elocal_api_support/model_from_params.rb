@@ -26,7 +26,7 @@ module ElocalApiSupport::ModelFromParams
     allowed_filter_columns.each do |param_name|
       if params[param_name].present?
         if respond_to?(:"with_#{associated_model.to_s.downcase}_by_#{param_name}", true)
-          rel = send(:"with_#{associated_model.to_s.downcase}_by_#{param_name}", rel)
+          rel = send(:"with_#{associated_model.to_s.downcase}_by_#{param_name}", params[param_name])
         elsif associated_model.respond_to?(:"with_#{param_name}", true)
           rel = rel.send(:"with_#{param_name}", params[param_name])
         else
