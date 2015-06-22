@@ -18,13 +18,11 @@ module ElocalApiSupport
     end
 
     module Common
-
       protected
 
       def filtered_objects_for_json
-
         if associated_model_serializer
-          filtered_objects.map{|r| associated_model_serializer.new(r)}
+          filtered_objects.map { |r| associated_model_serializer.new(r) }
         else
           filtered_objects
         end
@@ -33,13 +31,14 @@ module ElocalApiSupport
       def associated_model_serializer
         unless @associated_model_serializer_lookup_complete
           c = "#{associated_model}Serializer"
-          @associated_model_serializer = if Object.const_defined?(c)
-            Rails.logger.debug("Using #{c}")
-            c.constantize
-          else
-            Rails.logger.debug("No serializer #{c}")
-            nil
-          end
+          @associated_model_serializer =
+            if Object.const_defined?(c)
+              Rails.logger.debug("Using #{c}")
+              c.constantize
+            else
+              Rails.logger.debug("No serializer #{c}")
+              nil
+            end
           @associated_model_serializer_lookup_complete = true
         end
         @associated_model_serializer
@@ -49,6 +48,5 @@ module ElocalApiSupport
         @model_name ||= controller_name.singularize
       end
     end
-
   end
 end

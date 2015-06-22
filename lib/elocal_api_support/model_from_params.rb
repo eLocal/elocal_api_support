@@ -4,6 +4,7 @@ module ElocalApiSupport::ModelFromParams
   #  - params
   #  - associated_model_name
   #
+
   protected
 
   def lookup_object
@@ -30,7 +31,7 @@ module ElocalApiSupport::ModelFromParams
         elsif associated_model.respond_to?(:"with_#{param_name}", true)
           rel = rel.send(:"with_#{param_name}", params[param_name])
         else
-          rel = rel.where({param_name.to_sym => params[param_name]})
+          rel = rel.where(param_name.to_sym => params[param_name])
         end
       end
     end
@@ -80,15 +81,12 @@ module ElocalApiSupport::ModelFromParams
   end
 
   def filter_sort_col
-    if params[:sort] && params[:sort][:key] && allowed_sort_columns.include?(params[:sort][:key])
-      params[:sort][:key]
-    else
-      nil
-    end
+    params[:sort][:key] \
+      if params[:sort] && params[:sort][:key] && allowed_sort_columns.include?(params[:sort][:key])
   end
 
   def filter_sort_direction
-    if params[:sort] && params[:sort][:direction] && ['asc','desc'].include?(params[:sort][:direction])
+    if params[:sort] && params[:sort][:direction] && %w(asc desc).include?(params[:sort][:direction])
       params[:sort][:direction]
     else
       ''

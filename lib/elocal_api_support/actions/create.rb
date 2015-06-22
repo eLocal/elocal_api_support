@@ -8,7 +8,7 @@ module ElocalApiSupport
         if obj.save
           render json: obj
         else
-          render json: {errors: obj.errors}, status: 422
+          render json: { errors: obj.errors }, status: 422
         end
       end
     end

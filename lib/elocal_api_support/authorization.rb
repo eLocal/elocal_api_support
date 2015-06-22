@@ -24,13 +24,20 @@ module ElocalApiSupport::Authorization
   end
 
   def authorize!
-    unless authorized?
-      Rails.logger.warn("Somebody else tried to access our internal API!  Value: #{authorize_request_token} Params: #{params}, Headers: #{request.headers.map{ |k, _v| k }}")
-      render json: error_response_hash, status: 401
-    end
+    return if authorized?
+
+    Rails.logger.warn(
+      format(
+        'Somebody else tried to access our internal API!  Value: %s Params: %s, Headers: %s',
+        authorize_request_token,
+        params,
+        request.headers.map { |k, _v| k }
+      )
+    )
+    render json: error_response_hash, status: 401
   end
 
   def authorize_request_token
-    [params[:request_token], request.headers["HTTP_X_REQUEST_TOKEN"]].detect(&:present?)
+    [params[:request_token], request.headers['HTTP_X_REQUEST_TOKEN']].detect(&:present?)
   end
 end
