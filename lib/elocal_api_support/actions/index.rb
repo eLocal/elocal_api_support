@@ -44,9 +44,9 @@ module ElocalApiSupport
 
       def add_pagination_headers
         logger.debug { format 'Adding pagination headers for filtered_objects collection of size %d', filtered_objects.total_count }
-        response.headers['x-total'] = filtered_objects.total_count
-        response.headers['x-per-page'] = per_page
-        response.headers['x-page'] = current_page
+        response.headers['x-total'] = filtered_objects.total_count.to_s
+        response.headers['x-per-page'] = per_page.to_s
+        response.headers['x-page'] = current_page.to_s
       end
 
       def paginated_request?
