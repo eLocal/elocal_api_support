@@ -10,6 +10,10 @@ module ElocalApiSupport
 
       protected
 
+      def require_pagination?
+        true
+      end
+
       # Her library likes to paginate with headers,
       # ActiveResource cannot handle headers.
       # So awesomely, two implementations. To use the "Her" implementation with headers
@@ -50,7 +54,7 @@ module ElocalApiSupport
       end
 
       def paginated_request?
-        params[:page].present? || params[:per_page].present?
+        require_pagination? || params[:page].present? || params[:per_page].present?
       end
     end
   end

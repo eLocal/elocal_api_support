@@ -56,8 +56,12 @@ module ElocalApiSupport::ModelFromParams
     rel
   end
 
+  def default_per_page
+    500
+  end
+
   def per_page
-    @per_page ||= (params[:per_page] || 10).to_i
+    @per_page ||= (params[:per_page] || default_per_page).to_i
   end
 
   def current_page
