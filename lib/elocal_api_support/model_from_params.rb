@@ -16,7 +16,7 @@ module ElocalApiSupport::ModelFromParams
   end
 
   def with_pagination(rel)
-    if params[:page] || params[:per_page]
+    if paginated_request?
       rel.page(current_page).per(per_page)
     else
       rel.page(current_page).limit(false)
