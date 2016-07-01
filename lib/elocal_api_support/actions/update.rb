@@ -1,23 +1,30 @@
 module ElocalApiSupport
   module Actions
     module Update
+      DEFAULT_IGNORED_PARAMETERS = %w(id created_at updated_at).freeze
+
       def update
-        params.permit!
         if lookup_object.update_attributes(parameters_available_for_update)
           render json: lookup_object
         else
+          Rails.logger.info { "There was an issue updating model #{lookup_object}" }
+          Rails.logger.debug { "Error details #{lookup_object.errors.to_xml}" }
           render json:  { errors: lookup_object.errors }, status: 422
         end
       end
 
       private
 
-      def parameters_available_for_update
-        params[associated_model_name].reject { |(k, _v)| k.in?(parameters_to_ignore_from_update) }
+      def parameters_to_ignore_from_update
+        DEFAULT_IGNORED_PARAMETERS
       end
 
-      def parameters_to_ignore_from_update
-        %w(id created_at updated_at).freeze
+      def updatable_parameter_names
+        associated_model.columns.map(&:name) - parameters_to_ignore_from_update
+      end
+
+      def parameters_available_for_update
+        params[associated_model_name].permit(*updatable_parameter_names)
       end
     end
   end
