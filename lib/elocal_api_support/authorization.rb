@@ -2,7 +2,7 @@ module ElocalApiSupport::Authorization
   extend ActiveSupport::Concern
 
   included do
-    before_filter :authorize!
+    before_action :authorize!
   end
 
   protected

@@ -2,7 +2,7 @@ module ElocalApiSupport::EnableCors
   extend ActiveSupport::Concern
   included do
     cors_allow_all
-    before_filter :enable_cors
+    before_action :enable_cors
   end
 
   module ClassMethods
