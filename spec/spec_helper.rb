@@ -16,7 +16,6 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rubygems'
 require 'bundler/setup'
-require 'responders'
 require 'fixtures/application'
 require 'fixtures/controllers'
 require 'rspec/rails'

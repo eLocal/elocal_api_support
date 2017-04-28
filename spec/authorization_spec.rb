@@ -31,14 +31,14 @@ describe AuthController, type: :controller do
     end
 
     it 'does not allow wrong token' do
-      get :index, request_token: 'ThisIsNotTheKey'
+      get :index, params: { request_token: 'ThisIsNotTheKey' }
       expect(response).to have_http_status(401)
       expect(response.body).to eq(error_response)
     end
 
     it 'allows the right token' do
-      get :index, request_token: 'mysecretkey'
-      expect(response).to have_http_status(200)
+      get :index, params: { request_token: 'mysecretkey' }
+      expect(response).to have_http_status(:accepted)
     end
   end
 
@@ -56,13 +56,13 @@ describe AuthController, type: :controller do
     end
 
     it 'does not use default behavior' do
-      get :index, request_token: 'mysecretkey'
+      get :index, params: { request_token: 'mysecretkey' }
       expect(response).to have_http_status(401)
     end
 
     it 'authorizes appropriately' do
-      get :index, request_token: 'FakeAuthorizerKey'
-      expect(response).to have_http_status(200)
+      get :index, params: { request_token: 'FakeAuthorizerKey' }
+      expect(response).to have_http_status(:accepted)
     end
   end
 end
