@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ElocalApiSupport
   module Actions
     module Update
@@ -9,7 +11,7 @@ module ElocalApiSupport
         else
           Rails.logger.info { "There was an issue updating model #{lookup_object}" }
           Rails.logger.debug { "Error details #{lookup_object.errors.to_xml}" }
-          render json:  { errors: lookup_object.errors }, status: 422
+          render json: { errors: lookup_object.errors }, status: 422
         end
       end
 
@@ -20,7 +22,11 @@ module ElocalApiSupport
       end
 
       def updatable_parameter_names
-        associated_model.columns.map(&:name) - parameters_to_ignore_from_update
+        associated_model.columns.map do |col|
+          next if col.name.in?(parameters_to_ignore_from_update)
+
+          col.array ? { col.name => [] } : col.name
+        end
       end
 
       def parameters_available_for_update
