@@ -22,16 +22,11 @@ module ElocalApiSupport
       end
 
       def updatable_parameter_names
-        param_names = associated_model.columns.map(&:name) - parameters_to_ignore_from_update
+        associated_model.columns.map do |col|
+          next if col.name.in?(parameters_to_ignore_from_update)
 
-        param_names.dup.each do |name|
-          if lookup_object.public_send(name).is_a?(Array)
-            param_names.delete(name)
-            param_names << { name => [] }
-          end
+          col.array ? { col.name => [] } : col.name
         end
-
-        param_names
       end
 
       def parameters_available_for_update
