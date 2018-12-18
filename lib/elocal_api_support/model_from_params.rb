@@ -46,7 +46,7 @@ module ElocalApiSupport::ModelFromParams
       elsif associated_model.respond_to?(:"order_by_#{filter_sort_col}", true)
         rel = rel.send(:"order_by_#{filter_sort_col}", params[filter_sort_col], filter_sort_direction)
       else
-        rel = rel.order("#{associated_model.table_name}.#{filter_sort_col} #{filter_sort_direction}")
+        rel = rel.order(Arel.sql("#{associated_model.table_name}.#{filter_sort_col} #{filter_sort_direction}"))
       end
     end
     rel
