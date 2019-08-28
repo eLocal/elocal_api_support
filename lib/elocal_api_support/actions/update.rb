@@ -6,7 +6,7 @@ module ElocalApiSupport
       DEFAULT_IGNORED_PARAMETERS = %w(id created_at updated_at).freeze
 
       def update
-        if lookup_object.update_attributes(parameters_available_for_update)
+        if lookup_object.update(parameters_available_for_update)
           render json: lookup_object
         else
           Rails.logger.info { "There was an issue updating model #{lookup_object}" }
